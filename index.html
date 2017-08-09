@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='UTF-8'>
+    <title>DragNDrop</title>
+  </head>
+  <body>
+    <form class='upload' method='post' action='' enctype='multipart/form-data'>
+      <div class='upload-input'>
+        <input class='upload-file' type='file' id='file' data-multiple-caption='{count} files selected' multiple />
+        <label for='file'><strong>Choose a file</strong><span class='upload-drag'> or drag it here</span>.</label>
+        <button class='upload-button' type='submit'>Upload</button>
+      </div>
+      <div class='upload-status-uploading'>Uploading&hellip;</div>
+      <div class='upload-status-success'>Done :)</div>
+      <div class='upload-status-error'>Error :(</div>
+    </form>
+    <br />
+    We are Using Node.js <script>document.write(process.versions.node)</script>,
+    Chromium <script>document.write(process.versions.chrome)</script>,
+    and Electron <script>document.write(process.versions.electrion)</script>.
+  </body>
+</html>
