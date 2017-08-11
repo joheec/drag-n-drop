@@ -30,8 +30,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-register": "^6.24.1",
     "browser-env": "^3.1.2",
-    "electron": "~1.6.2",
-    "global": "^4.3.2"
+    "electron": "~1.6.2"
   },
   "dependencies": {
     "stylus": "^0.54.5"
