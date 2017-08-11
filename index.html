@@ -7,7 +7,7 @@
   <body>
     <form class='upload' method='post' action='' enctype='multipart/form-data'>
       <div class='upload-input'>
-        <input class='upload-file' type='file' id='file' data-multiple-caption='{count} files selected' multiple />
+        <input class='upload-file' type='file' name='files[]' id='file' data-multiple-caption='{count} files selected' multiple />
         <label for='file'><strong>Choose a file</strong><span class='upload-drag'> or drag it here</span>.</label>
         <button class='upload-button' type='submit'>Upload</button>
       </div>
