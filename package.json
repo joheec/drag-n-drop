@@ -5,7 +5,15 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "stylus": "stylus --watch index.styl" 
+    "test": "ava",
+    "stylus": "stylus --watch index.styl"
+  },
+  "ava": {
+    "babel": "inherit",
+    "require": [
+      "babel-register",
+      "./setup.js"
+    ]
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -18,7 +26,12 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "~1.6.2"
+    "ava": "^0.21.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-register": "^6.24.1",
+    "browser-env": "^3.1.2",
+    "electron": "~1.6.2",
+    "global": "^4.3.2"
   },
   "dependencies": {
     "stylus": "^0.54.5"
