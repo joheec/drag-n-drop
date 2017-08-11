@@ -1,5 +1,36 @@
 <!DOCTYPE html>
 <html>
+  <style>
+    form.upload {
+      width: 50%;
+      height: 400px;
+      margin: auto;
+      padding: 50px;
+      background-color: pink;
+      outline: 2px dashed black;
+      outline-offset: -10px;
+    }
+    .upload-input {
+      text-align: center;
+    }
+    input.upload-file {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
+    .upload-input strong {
+      cursor: pointer;
+    }
+    .status-files,
+    .status-uploading,
+    .status-success,
+    .status-error {
+      display: none;
+    }
+  </style>
   <head>
     <meta charset='UTF-8'>
     <title>DragNDrop</title>
@@ -11,9 +42,10 @@
         <label for='file'><strong>Choose a file</strong><span class='upload-drag'> or drag it here</span>.</label>
         <button class='upload-button' type='submit'>Upload</button>
       </div>
-      <div class='upload-status-uploading'>Uploading&hellip;</div>
-      <div class='upload-status-success'>Done :)</div>
-      <div class='upload-status-error'>Error :(</div>
+      <div class='status-files'> Selected files: </div>
+      <div class='status-uploading'>Uploading&hellip;</div>
+      <div class='status-success'>Done :)</div>
+      <div class='status-error'>Error :(</div>
     </form>
     <br />
     We are Using Node.js <script>document.write(process.versions.node)</script>,
