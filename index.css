@@ -1,0 +1,35 @@
+form.upload {
+  width: 50%;
+  margin: auto;
+  padding: 50px;
+  color: #000;
+  background-color: #ffc0cb;
+  outline: 2px dashed;
+  outline-color: #000;
+  outline-offset: -10px;
+}
+form.upload:hover {
+  color: #fff;
+  background-color: #003f34;
+  outline-color: #fff;
+}
+form.upload .upload-input {
+  text-align: center;
+}
+form.upload .upload-input input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+form.upload .upload-input strong {
+  cursor: pointer;
+}
+form.upload .status-files,
+form.upload .status-uploading,
+form.upload .status-success,
+form.upload .status-error {
+  display: none;
+}
