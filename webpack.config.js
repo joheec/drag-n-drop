@@ -1,10 +1,10 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/renderer.js',
+  entry: './src/index.js',
   output: {
     path: path.join(__dirname, 'build'),
-    filename: 'renderer.bundle.js',
+    filename: 'index.bundle.js',
   },
   devtool: 'inline-source-map',
   module: {

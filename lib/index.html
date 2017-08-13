@@ -1,26 +1,11 @@
 <!DOCTYPE html>
 <html>
-  <link rel="stylesheet" href="index.css">
-  <script>require('../build/renderer.bundle.js');</script>
   <head>
     <meta charset='UTF-8'>
     <title>DragNDrop</title>
   </head>
   <body>
-    <form class='upload' method='post' action='' enctype='multipart/form-data'>
-      <div class='upload-input'>
-        <input class='upload-file' type='file' name='files[]' id='file' data-multiple-caption='{count} files selected' multiple />
-        <label for='file'><strong>Choose a file</strong><span class='upload-drag'> or drag it here</span>.</label>
-        <button class='upload-button' type='submit'>Upload</button>
-      </div>
-      <div class='status-files'> Selected files: </div>
-      <div class='status-uploading'>Uploading&hellip;</div>
-      <div class='status-success'>Done :)</div>
-      <div class='status-error'>Error :(</div>
-    </form>
-    <br />
-    We are Using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+    <div id='app'></div>
   </body>
+  <script>require('../build/index.bundle.js');</script>
 </html>
