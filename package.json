@@ -4,16 +4,17 @@
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electron ./lib/main.js",
+    "build": "babel ./src/ -d ./lib",
     "test": "ava",
-    "watch:test": "ava --watch",
-    "stylus": "stylus --watch index.styl"
+    "watch:test": "ava -w",
+    "stylus": "stylus -w ./src/index.styl -o ./lib/index.css"
   },
   "ava": {
     "babel": "inherit",
     "require": [
       "babel-register",
-      "./setup.js"
+      "./src/setup.js"
     ]
   },
   "repository": "https://github.com/electron/electron-quick-start",
@@ -28,6 +29,7 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "ava": "^0.21.0",
+    "babel-cli": "^6.24.1",
     "babel-preset-env": "^1.6.0",
     "babel-register": "^6.24.1",
     "browser-env": "^3.1.2",
