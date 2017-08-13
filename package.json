@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron ./lib/main.js",
-    "build": "babel ./src/ -d ./lib",
+    "build": "webpack -w",
     "test": "ava",
     "watch:test": "ava -w",
     "stylus": "stylus -w ./src/index.styl -o ./lib/index.css"
@@ -30,12 +30,14 @@
   "devDependencies": {
     "ava": "^0.21.0",
     "babel-cli": "^6.24.1",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
     "babel-preset-env": "^1.6.0",
     "babel-register": "^6.24.1",
     "browser-env": "^3.1.2",
-    "electron": "~1.6.2"
+    "electron": "~1.6.2",
+    "stylus": "^0.54.5",
+    "webpack": "^3.5.4"
   },
-  "dependencies": {
-    "stylus": "^0.54.5"
-  }
+  "dependencies": {}
 }
