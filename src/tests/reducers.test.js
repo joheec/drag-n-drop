@@ -3,6 +3,7 @@ import fileReducer from '../app/reducers';
 
 test('Uploaded files reducer', (t) => {
   const initialState = {
+    nextId: 0,
     files: [],
   };
 
@@ -10,16 +11,19 @@ test('Uploaded files reducer', (t) => {
     {
       type: 'ADD_FILE', 
       payload: {
-        files: [
-          {fileObject1: 'fileObject1'},
-          {fileObject2: 'fileObject2'}
-        ]
+        file: 'fileObject1',
       }
     },
     {
       type: 'ADD_FILE', 
       payload: {
-        files: [{fileObject3: 'fileObject3'}]
+        file: 'fileObject2',
+      }
+    },
+    {
+      type: 'ADD_FILE', 
+      payload: {
+        file: 'fileObject3',
       }
     }
   ];
@@ -27,10 +31,20 @@ test('Uploaded files reducer', (t) => {
   const newState = actions.reduce(fileReducer, undefined);
 
   t.deepEqual(newState, {
+    nextId: 3,
     files: [
-      {fileObject1: 'fileObject1'},
-      {fileObject2: 'fileObject2'},
-      {fileObject3: 'fileObject3'},
+      {
+        id: 0,
+        file: 'fileObject1'
+      },
+      {
+        id: 1,
+        file: 'fileObject2'
+      },
+      {
+        id: 2,
+        file: 'fileObject3'
+      },
     ],
   });
 });

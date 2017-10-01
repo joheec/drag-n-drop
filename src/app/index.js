@@ -5,9 +5,12 @@ import { connect } from 'react-redux';
 import { Form } from './form';
 import * as fileActions from './actions';
 
-const App = ({ actions }, files) => (
-  <Form addFile={ actions.addFile }/>
-)
+const App = ({ actions, files }) => {
+  return <Form 
+    addFile={ actions.addFile }
+    files={ files }
+  />
+}
 
 const mapStateToProps = state => ({
   files: state.files

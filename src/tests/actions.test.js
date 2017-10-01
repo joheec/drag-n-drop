@@ -2,13 +2,12 @@ import { test } from 'ava';
 import { addFile } from '../app/actions';
 
 test('Test reducer action creator', t => {
-  const files = [
-    {file1: 'file1'},
-    {file2: 'file2'}
-  ];
+  const file = 'file1';
 
-  t.deepEqual(addFile(files), {
+  t.deepEqual(addFile(file), {
     type: 'ADD_FILE',
-    payload: [...files]
+    payload: {
+      file
+    }
   });
 });

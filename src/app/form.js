@@ -2,65 +2,91 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import { css } from 'glamor';
 import glamorous from 'glamorous';
+import FormStatus from './form-status';
 
-export const canDragAndDrop = (div) => (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div));
-export const hasFormData = window => ('FormData' in window); 
-export const hasFileReader = (window) => ('FileReader' in window); 
-export const canAdvanceUpload = (div, window) => (canDragAndDrop(div) && hasFormData(window) && hasFileReader(window));
+export class Form extends React.Component {
+  constructor(props) {
+    super(props);
 
-let droppedFiles = [];
+    this.state = {
+      className: 'not-dragging',
+      status: 'pending',
+    }
 
-export const setupAdvanceUpload = () => {
-  const div = document.createElement('div');
-  if (!canAdvanceUpload(div, window)) return;
-  const screen = document.getElementsByTagName('html')[0];
-  const dragEvents = ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'];
-  dragEvents.forEach(drag => {
-    screen.addEventListener(drag, e => {
-      e.preventDefault();
-      e.stopPropagation();
+    this._onDragEvents = this._onDragEvents.bind(this);
+    this._onDragOver = this._onDragOver.bind(this);
+    this._onDragEnd = this._onDragEnd.bind(this);
+    this._onDrop = this._onDrop.bind(this);
+  }
+
+  componentDidMount() {
+    if (!canAdvanceUpload(document.createElement("div"), window)) return;
+    const form = document.querySelector("form");
+    const dragEvents = ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'];
+    dragEvents.forEach(drag => {
+      window.addEventListener(drag, this._onDragEvents);
     });
-  });
-  const form = document.querySelector('#app div');
-  const dragOverEvents = ['dragover', 'dragenter'];
-  dragOverEvents.forEach(drag => {
-    form.addEventListener(drag, e => {
-      form.classList.add('drag-over');
+    const dragOverEvents = ['dragover', 'dragenter'];
+    dragOverEvents.forEach(drag => {
+      form.addEventListener(drag, this._onDragOver);
     });
-  });
-  const dragEndEvents = ['dragend', 'dragleave', 'drop'];
-  dragEndEvents.forEach(drag => {
-    form.addEventListener(drag, e => {
-      form.classList.remove('drag-over');
+    const dragEndEvents = ['dragend', 'dragleave', 'drop'];
+    dragEndEvents.forEach(drag => {
+      form.addEventListener(drag, this._onDragEnd);
     });
-  });
-  form.addEventListener('drop', e => {
-    Array.from(e.dataTransfer.files).forEach(file => {
-      droppedFiles.push(file);
+    form.addEventListener('drop', this._onDrop);
+  }
+
+  componentWillUnmount() {
+    if (!canAdvanceUpload(document.createElement("div"), window)) return;
+    const form = document.querySelector("form");
+    const dragEvents = ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'];
+    dragEvents.forEach(drag => {
+      window.removeEventListener(drag, this._onDragEvents);
     });
-    console.log(droppedFiles);
-  });
+    const dragOverEvents = ['dragover', 'dragenter'];
+    dragOverEvents.forEach(drag => {
+      form.removeEventListener(drag, this._onDragOver);
+    });
+    const dragEndEvents = ['dragend', 'dragleave', 'drop'];
+    dragEndEvents.forEach(drag => {
+      form.removeEventListener(drag, this._onDragEnd);
+    });
+    form.removeEventListener('drop', this._onDrop);
+  }
+
+  render() {
+    return <FormStyle className={ this.state.className }>
+      <HideInput type="file" id="manual-upload" multiple />
+      <label htmlFor="manual-upload">
+        <ManualUpload>Choose a file</ManualUpload>
+      </label>
+      { canAdvanceUpload(document.createElement('div'), window) && <span className='upload-drag'> or drag it here</span> }.
+      <FormStatus status={ this.state.status }/>
+      <FileUl>
+        { this.props.files.map(({file, id}) => <li key={ id }>{ file }</li>) }
+      </FileUl>
+    </FormStyle>
+  }
+
+  _onDragEvents(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  _onDragOver(e) {
+    this.setState({className: 'dragging',});
+  }
+  
+  _onDragEnd(e) {
+    this.setState({className: 'not-dragging',});
+  }
+
+  _onDrop(e) {
+    this.setState({className: 'not-dragging', status: 'uploading'});
+    Array.from(e.dataTransfer.files).forEach(({ path }) => this.props.addFile(path));
+  }
 }
-
-export const Form = () => (
-  <FormStyle>
-    <form className='upload' method='post' action='' encType='multipart/form-data'>
-      <div className='upload-input' {...css({textAlign: 'center'})}>
-        <HideInput className='upload-file' type='file' name='files[]' id='file' data-multiple-caption='{count} files selected' multiple />
-        <label htmlFor='file'>
-          <strong {...css({cursor: 'pointer'})}>Choose a file</strong>
-          {canAdvanceUpload(document.createElement('div'), window) && <span className='upload-drag'> or drag it here</span>}.
-        </label>
-        <button className='upload-button' type='submit'>Upload</button>
-      </div>
-      <StatusStyle className='status-files'> Selected files: </StatusStyle>
-      <StatusStyle className='status-uploading'>Uploading&hellip;</StatusStyle>
-      <StatusStyle className='status-success'>Done :)</StatusStyle>
-      <StatusStyle className='status-error'>Error :(</StatusStyle>
-    </form>
-    <br />
-  </FormStyle>
-);
 
 const mouseoverStyle = css({
   color: 'mediumvioletred',
@@ -68,22 +94,19 @@ const mouseoverStyle = css({
   outlineColor: 'lightpink',
 });
 
-const FormStyle = glamorous.div({
-  width: '75\%',
-  height: '1\%',
+const FormStyle = glamorous.form({
+  width: '75%',
+  height: '1%',
   margin: 'auto',
   padding: '50px',
   color: 'rebeccapurple',
+  fontSize: '22px',
+  textAlign: 'center',
   backgroundColor: 'paleturquoise',
   outline: '2px dashed',
   outlineColor: 'darkturquoise',
   outlineOffset: '-10px',
-  ':hover': mouseoverStyle,
-  '.drag-over': mouseoverStyle,
-});
-
-const StatusStyle = glamorous.div({
-  display: 'none',
+  '.dragging': mouseoverStyle,
 });
 
 const HideInput = glamorous.input({
@@ -94,4 +117,19 @@ const HideInput = glamorous.input({
   position: 'absolute',
   zIndex: '-1',
 });
+
+const ManualUpload = glamorous.strong({
+  cursor: 'pointer',
+});
+
+const FileUl = glamorous.ul({
+  fontSize: '16px',
+  textAlign: 'left',
+  color: '#000000',
+});
+
+export const canDragAndDrop = (div) => (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div));
+export const hasFormData = window => ('FormData' in window); 
+export const hasFileReader = (window) => ('FileReader' in window); 
+export const canAdvanceUpload = (div, window) => (canDragAndDrop(div) && hasFormData(window) && hasFileReader(window));
 
