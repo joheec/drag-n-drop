@@ -1,5 +1,5 @@
 import test from 'ava';
-import { canDragAndDrop, hasFormData, hasFileReader, canAdvanceUpload } from './form';
+import { canDragAndDrop, hasFormData, hasFileReader, canAdvanceUpload } from '../app/form';
 
 const div = document.createElement('div');
 

@@ -42,7 +42,7 @@ export const setupAdvanceUpload = () => {
   });
 }
 
-export const App = () => (
+export const Form = () => (
   <FormStyle>
     <form className='upload' method='post' action='' encType='multipart/form-data'>
       <div className='upload-input' {...css({textAlign: 'center'})}>
