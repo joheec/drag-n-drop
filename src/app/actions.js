@@ -1,8 +1,8 @@
-export const addFile = file => (
+export const addUrl = url => (
   {
-    type: 'ADD_FILE',
+    type: 'ADD_URL',
     payload: {
-      file
+      url 
     }
   }
 );

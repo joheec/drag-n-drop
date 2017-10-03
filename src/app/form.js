@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import { css } from 'glamor';
 import glamorous from 'glamorous';
+import Transfer from 'transfer-sh';
 import FormStatus from './form-status';
 
 export class Form extends React.Component {
@@ -11,7 +12,10 @@ export class Form extends React.Component {
     this.state = {
       className: 'not-dragging',
       status: 'pending',
+      files: []
     }
+
+    this.uploadFiles = this.uploadFiles.bind(this);
 
     this._onDragEvents = this._onDragEvents.bind(this);
     this._onDragOver = this._onDragOver.bind(this);
@@ -62,9 +66,15 @@ export class Form extends React.Component {
         <ManualUpload>Choose a file</ManualUpload>
       </label>
       { canAdvanceUpload(document.createElement('div'), window) && <span className='upload-drag'> or drag it here</span> }.
+      <br/>
+      <FileUl>
+        { this.props.urls.map(({url, id}) => <li key={ id }>
+            <a href={ url } onClick={e => {e.preventDefault(); e.stopPropagation();}}>{ url }</a>
+          </li>) }
+      </FileUl>
       <FormStatus status={ this.state.status }/>
       <FileUl>
-        { this.props.files.map(({file, id}) => <li key={ id }>{ file }</li>) }
+        { this.state.files.map(( path, key) => <li key={ key }>{ path }</li>) }
       </FileUl>
     </FormStyle>
   }
@@ -83,8 +93,36 @@ export class Form extends React.Component {
   }
 
   _onDrop(e) {
-    this.setState({className: 'not-dragging', status: 'uploading'});
-    Array.from(e.dataTransfer.files).forEach(({ path }) => this.props.addFile(path));
+    const files = Array.from(e.dataTransfer.files).map(({ path }) => path);
+    this.setState({
+      className: 'not-dragging', 
+      status: 'uploading',
+      files: [
+        ...this.state.files,
+        ...files,
+      ]
+    });
+    this.uploadFiles(files);
+  }
+
+  async uploadFiles(files) {
+    const filePromises = files.map(path => {
+      new Transfer(path)
+        .upload()
+        .then(link => { 
+          console.dir(link); 
+          console.dir(path);
+          console.dir(this.state.files);
+          this.setState({
+            files: [...this.state.files.filter(file => file != path)]
+          });
+          this.state.files.length ? '' : this.setState({status: 'pending'});
+          this.props.addUrl(link);
+          return link; 
+        })
+        .catch(err => { console.dir(err) })
+    });
+   await Promise.all(filePromises);
   }
 }
 

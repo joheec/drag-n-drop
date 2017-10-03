@@ -1,18 +1,18 @@
 const initialState = {
   nextId: 0,
-  files: [],
+  urls: [],
 };
 
 export default (state=initialState, { type, payload }) => {
   switch (type) {
-    case 'ADD_FILE':
+    case 'ADD_URL':
       return {
         nextId: state.nextId + 1,
-        files: [
-          ...state.files,
+        urls: [
+          ...state.urls,
           {
             id: state.nextId,
-            file: payload.file
+            url: payload.url
           }
         ],
       }

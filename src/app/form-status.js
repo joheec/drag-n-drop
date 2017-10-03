@@ -4,9 +4,9 @@ import glamorous from 'glamorous';
 export default  ({ status }) => {
   switch(status) {
     case 'uploading':
-      return <StatusStrong><br/><br/>Uploading&hellip;</StatusStrong>;
+      return <StatusStrong>Uploading&hellip;</StatusStrong>;
     case 'upload-error':
-      return <StatusStrong><br/><br/>Error :(</StatusStrong>;
+      return <StatusStrong>Error :(</StatusStrong>;
     default:
       return null;
   }

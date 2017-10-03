@@ -1,23 +1,22 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
 import { Form } from './form';
-import * as fileActions from './actions';
+import * as urlActions from './actions';
 
-const App = ({ actions, files }) => {
+const App = ({ actions, urls }) => {
   return <Form 
-    addFile={ actions.addFile }
-    files={ files }
+    addUrl={ actions.addUrl }
+    urls={ urls }
   />
 }
 
 const mapStateToProps = state => ({
-  files: state.files
+  urls: state.urls
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(fileActions, dispatch)
+  actions: bindActionCreators(urlActions, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
